@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import joblib
+import joblib, gzip
 import numpy as np
 
-# load model and encoders
-model = joblib.load("crop_model.pkl")
+# load model (compressed .pkl.gz)
+with gzip.open("crop_model.pkl.gz", "rb") as f:
+    model = joblib.load(f)
+
+# load encoders (normal .pkl)
 label_encoders = joblib.load("encoders.pkl")
 
 app = FastAPI(title="🌱 Crop Recommendation API")
